@@ -15,3 +15,32 @@ Feature: Tests for gpcheckperf
     Then  gpcheckperf should return a return code of 0
     And   gpcheckperf should print "avg = " to stdout
     And   gpcheckperf should not print "NOTICE: -t is deprecated " to stdout
+
+   @concourse_cluster
+   Scenario: gpcheckperf runs tests by passing hostfile in super verbose mode
+     Given the database is running
+     And create a gpcheckperf input host file
+     When  the user runs "gpcheckperf -f /tmp/hostfile1 -r M -d /data/gpdata/ --duration=3m -V"
+     Then  gpcheckperf should return a return code of 0
+     And   gpcheckperf should print "Full matrix netperf bandwidth test" to stdout
+     And gpcheckperf should not print "IndexError: list index out of range" to stdout
+
+  @concourse_cluster
+   Scenario: gpcheckperf runs tests by passing hostfile in verbose mode
+     Given the database is running
+     And create a gpcheckperf input host file
+     When  the user runs "gpcheckperf -f /tmp/hostfile1 -r M -d /data/gpdata/ --duration=3m -v"
+     Then  gpcheckperf should return a return code of 0
+     And   gpcheckperf should print "Full matrix netperf bandwidth test" to stdout
+     And gpcheckperf should not print "IndexError: list index out of range" to stdout
+
+  @concourse_cluster
+   Scenario: gpcheckperf runs tests by passing hostfile in regular mode
+     Given the database is running
+     And create a gpcheckperf input host file
+     When  the user runs "gpcheckperf -f /tmp/hostfile1 -r M -d /data/gpdata/ --duration=3m"
+     Then  gpcheckperf should return a return code of 0
+     And   gpcheckperf should print "Full matrix netperf bandwidth test" to stdout
+     And gpcheckperf should not print "IndexError: list index out of range" to stdout
+
+
